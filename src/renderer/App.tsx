@@ -3,6 +3,11 @@ import icon from '../../assets/icon.svg';
 import './App.css';
 
 const Hello = () => {
+  const onClick = async () => {
+    const res = window.electron.store.set('foo', 'bar');
+    console.log('res', res);
+    console.log(window.electron.store.get('foo'));
+  };
   return (
     <div>
       <div className="Hello">
@@ -22,18 +27,12 @@ const Hello = () => {
             Read our docs
           </button>
         </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
+        <button type="button" onClick={onClick}>
+          <span role="img" aria-label="folded hands">
+            🙏
+          </span>
+          Donate
+        </button>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+export type Channels =
+  | 'electron-store-get'
+  | 'electron-store-set'
+  | 'ipc-example';
 
 const electronHandler = {
   ipcRenderer: {
@@ -18,6 +21,18 @@ const electronHandler = {
     },
     once(channel: Channels, func: (...args: unknown[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
+    },
+
+    invoke(channel: Channels, args: any): Promise<any> {
+      return ipcRenderer.invoke(channel, args);
+    },
+  },
+  store: {
+    get(key: string) {
+      return ipcRenderer.sendSync('electron-store-get', key);
+    },
+    set(key: string, value: any) {
+      return ipcRenderer.send('electron-store-set', key, value);
     },
   },
 };
