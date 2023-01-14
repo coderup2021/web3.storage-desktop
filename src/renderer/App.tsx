@@ -1,6 +1,7 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import icon from '../../assets/icon.svg';
 import './App.css';
+import { Button } from 'antd';
 
 const Hello = () => {
   const onClick = async () => {
@@ -20,19 +21,19 @@ const Hello = () => {
           target="_blank"
           rel="noreferrer"
         >
-          <button type="button">
+          <Button type="primary">
             <span role="img" aria-label="books">
               📚
             </span>
             Read our docs
-          </button>
+          </Button>
         </a>
-        <button type="button" onClick={onClick}>
+        <Button type="primary" onClick={onClick}>
           <span role="img" aria-label="folded hands">
             🙏
           </span>
           Donate
-        </button>
+        </Button>
       </div>
     </div>
   );
