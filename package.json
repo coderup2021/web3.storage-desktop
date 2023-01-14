@@ -46,6 +46,7 @@
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
+    "clean:store": "ts-node ./cleanStore.ts",
     "test": "jest"
   },
   "lint-staged": {
@@ -103,6 +104,7 @@
     "electron-log": "^4.4.8",
     "electron-store": "^8.1.0",
     "electron-updater": "^5.2.3",
+    "fs-extra": "^11.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.0"
@@ -117,6 +119,7 @@
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
+    "@types/fs-extra": "^11.0.1",
     "@types/jest": "^28.1.7",
     "@types/node": "18.7.6",
     "@types/react": "^18.0.17",
