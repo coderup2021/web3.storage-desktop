@@ -1,5 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, Modal, Select } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+
 const { Option } = Select;
 import './style.scss';
 import TokenForm from './TokenForm';
@@ -33,6 +35,18 @@ const ApiToken: FC = () => {
     setCurrToken(window.electron.store.get('currToken') || '');
   }, []);
 
+  const onDelete = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    token: Token
+  ) => {
+    event.stopPropagation();
+    const tokens: Token[] = window.electron.store.get('tokens') || [];
+    window.electron.store.set(
+      'tokens',
+      tokens.filter((t) => t.hash !== token.hash)
+    );
+    setRefreshTokens((_) => !_);
+  };
   return (
     <>
       <span>Token:</span>
@@ -40,11 +54,25 @@ const ApiToken: FC = () => {
         className="token-select"
         onChange={onTokenChange}
         value={currToken}
+        placeholder={
+          tokenList.length < 1
+            ? 'please add a token at first'
+            : 'Please select a token'
+        }
       >
         {tokenList.map((token) => (
-          <Option key={token.hash} value={token.hash}>{`${formateHash(
-            token.hash
-          )}  ${token.comment}`}</Option>
+          <Option
+            key={token.hash}
+            value={token.hash}
+            className={'token-option'}
+          >
+            <span className="left">
+              {`${formateHash(token.hash)}  ${token.comment}`}{' '}
+            </span>
+            <span onClickCapture={(e) => onDelete(e, token)} className="right">
+              <CloseOutlined />
+            </span>
+          </Option>
         ))}
       </Select>
       <Button onClick={onAdd}>+</Button>
