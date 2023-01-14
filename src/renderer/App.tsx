@@ -3,6 +3,7 @@ import icon from '../../assets/icon.svg';
 import './App.css';
 import { Button } from 'antd';
 import ApiToken from './components/ApiToken/ApiToken';
+import Upload from './components/Upload/Upload';
 
 const Hello = () => {
   const onClick = async () => {
@@ -13,6 +14,7 @@ const Hello = () => {
   return (
     <div>
       <ApiToken />
+      <Upload />
     </div>
   );
 };
