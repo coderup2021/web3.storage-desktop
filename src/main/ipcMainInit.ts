@@ -1,8 +1,8 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import ElectronStore from 'electron-store';
-
+import { storeFileName } from '../appConfig';
 const store = new ElectronStore({
-  name: 'web3.storage.config',
+  name: storeFileName,
 });
 
 const ipcMainInit = (mainWindow: BrowserWindow) => {

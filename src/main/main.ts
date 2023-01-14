@@ -15,6 +15,8 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import ipcMainInit from './ipcMainInit';
+import { storeFileName } from '../appConfig';
+import fse, { WriteFileOptions } from 'fs-extra';
 
 class AppUpdater {
   constructor() {
@@ -50,9 +52,14 @@ const installExtensions = async () => {
     )
     .catch(console.log);
 };
+const writeAppStorePath = async () => {
+  const storePath = path.resolve(app.getPath('userData'), storeFileName);
+  fse.writeFileSync(path.resolve(app.getAppPath(), '.storePath'), storePath);
+};
 
 const createWindow = async () => {
   if (isDebug) {
+    writeAppStorePath();
     // await installExtensions();
   }
 
