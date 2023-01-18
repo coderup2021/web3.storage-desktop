@@ -3,6 +3,12 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 export type Channels =
   | 'electron-store-get'
   | 'electron-store-set'
+  | 'openDialog'
+  | 'uploadFiles'
+  | 'fileList'
+  | 'uploadingList'
+  | 'renameFile'
+  | 'copyToClipBoard'
   | 'ipc-example';
 
 const electronHandler = {

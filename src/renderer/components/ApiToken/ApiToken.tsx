@@ -1,84 +1,113 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Button, Modal, Select } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
-
-const { Option } = Select;
-import './style.scss';
-import TokenForm from './TokenForm';
+import { useCallback, useEffect, useState } from 'react';
+import { Button, Progress, Table, Tooltip, message, Row, Col, Tag } from 'antd';
+import { Upload } from 'web3.storage';
+import { ColumnType } from 'antd/es/table';
+import { useQuery, useQueryClient } from 'react-query';
 import { formateHash } from '../../../util';
+import './_style.scss';
+import TokenForm from './TokenForm';
 
-const ApiToken: FC = () => {
-  const [open, setOpen] = useState(false);
-  const [refreshTokens, setRefreshTokens] = useState(false);
-  const [tokenList, setTokenList] = useState<Token[]>([]);
+const ApiToken = () => {
+  const [dataSource, setDataSource] = useState<Token[]>([]);
   const [currToken, setCurrToken] = useState('');
-
-  const onAddSuccess = useCallback(() => {
-    setRefreshTokens((_) => !_);
-  }, []);
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
 
   const onAdd = useCallback(() => {
     setOpen(true);
   }, []);
 
-  useEffect(() => {
-    const tokens = window.electron.store.get('tokens') || [];
-    setTokenList(tokens);
-  }, [refreshTokens]);
+  const onAddSuccess = useCallback(() => {
+    queryClient.invalidateQueries('tokens');
+  }, [queryClient]);
+
+  const { data, isSuccess, isError } = useQuery('tokens', () =>
+    Promise.resolve(window.electron.store.get('tokens'))
+  );
 
   useEffect(() => {
-    setCurrToken(window.electron.store.get('currToken') || '');
+    if (isSuccess) {
+      setDataSource(data);
+    }
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    setCurrToken(window.electron.store.get('currToken'));
   }, []);
 
   const onTokenChange = useCallback((value: string) => {
     window.electron.store.set('currToken', value);
     setCurrToken(window.electron.store.get('currToken') || '');
+    message.success('switch token success');
   }, []);
 
-  const onDelete = (
-    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-    token: Token
-  ) => {
-    event.stopPropagation();
-    const tokens: Token[] = window.electron.store.get('tokens') || [];
-    window.electron.store.set(
-      'tokens',
-      tokens.filter((t) => t.hash !== token.hash)
-    );
-    setRefreshTokens((_) => !_);
-  };
+  const onDelete = useCallback(
+    (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, token: Token) => {
+      const tokens: Token[] = window.electron.store.get('tokens') || [];
+      window.electron.store.set(
+        'tokens',
+        tokens.filter((t) => t.hash !== token.hash)
+      );
+      message.success('delete token success');
+      queryClient.invalidateQueries('tokens');
+    },
+    [queryClient]
+  );
+
+  const columns: ColumnType<Token>[] = [
+    {
+      title: 'comment',
+      dataIndex: 'comment',
+      key: 'comment',
+    },
+    {
+      title: 'hash',
+      dataIndex: 'hash',
+      key: 'hash',
+      render: (text: string) => {
+        return formateHash(text);
+      },
+    },
+    {
+      title: 'is Current',
+      key: 'hash',
+      render: (_: string, record: Token) => {
+        return record.hash === currToken ? <Tag color={'blue'}>yes</Tag> : 'no';
+      },
+    },
+    {
+      title: 'Operation',
+      key: 'operation',
+      render: (text: string, record: Token) => (
+        <>
+          <Button onClick={(e) => onDelete(e, record)}>Delete</Button>
+          {currToken !== record.hash && (
+            <Button onClick={() => onTokenChange(record.hash)}>
+              Set Current
+            </Button>
+          )}
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
-      <span>Token:</span>
-      <Select
-        className="token-select"
-        onChange={onTokenChange}
-        value={currToken}
-        placeholder={
-          tokenList.length < 1
-            ? 'please add a token at first'
-            : 'Please select a token'
-        }
-      >
-        {tokenList.map((token) => (
-          <Option
-            key={token.hash}
-            value={token.hash}
-            className={'token-option'}
-          >
-            <span className="left">
-              {`${formateHash(token.hash)}  ${token.comment}`}{' '}
-            </span>
-            <span onClickCapture={(e) => onDelete(e, token)} className="right">
-              <CloseOutlined />
-            </span>
-          </Option>
-        ))}
-      </Select>
-      <Button onClick={onAdd}>+</Button>
+      <Row>
+        <Col span={8}>
+          <span>Current Token: {formateHash(currToken)}</span>
+        </Col>
+        <Button onClick={onAdd}>+</Button>
+      </Row>
       <TokenForm open={open} setOpen={setOpen} onAddSuccess={onAddSuccess} />
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        style={{ width: '100%' }}
+        pagination={false}
+        rowKey={(row: Token) => row.hash}
+      />
     </>
   );
 };
-ApiToken.displayName = 'ApiToken';
 export default ApiToken;
