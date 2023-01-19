@@ -1,0 +1,197 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+body {
+  position: relative;
+  color: white;
+  height: 100vh;
+  width: 100%;
+  font-family: sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: #03040a;
+  padding-bottom: 20px;
+}
+
+button {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  appearance: none;
+  font-size: 1.3rem;
+  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+  transition: all ease-in 0.1s;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+button:hover {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  margin: 10px;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+#w3-table-list.ant-table {
+  background-color: transparent;
+  color: inherit;
+
+  span.anticon.anticon-search {
+    color: #fff;
+  }
+  span.anticon.anticon-search.active {
+    color: #1677ff;
+  }
+  span.anticon-caret-up {
+    color: #fff;
+  }
+  span.anticon-caret-up.active {
+    color: #1677ff;
+  }
+
+  span.anticon-caret-down {
+    color: #fff;
+  }
+  span.anticon-caret-down.active {
+    color: #1677ff;
+  }
+  .ant-table-thead {
+    .ant-table-cell-scrollbar {
+      background-color: transparent;
+      box-shadow: none;
+    }
+    tr {
+      height: 30px;
+    }
+    th {
+      height: 30px;
+      background-color: transparent;
+      color: inherit;
+      border-bottom: 0.078125rem solid rgba(255, 255, 255, 0.05);
+      padding: 8px 16px;
+
+      &::before {
+        width: 0;
+      }
+    }
+  }
+  .ant-table-tbody {
+    * {
+      background-color: transparent;
+    }
+    tr {
+      border: none;
+      border-bottom: 0.078125rem solid rgba(255, 255, 255, 0.05);
+      td {
+        border: none;
+        border-bottom: 0.078125rem solid rgba(255, 255, 255, 0.05);
+      }
+
+      td.ant-table-cell.ant-table-cell-row-hover {
+        background-color: transparent;
+        border-bottom: 0.078125rem solid rgba(255, 255, 255, 0.05);
+      }
+    }
+    tr:nth-child(2n) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+  .ant-table-body {
+    scrollbar-color: rebeccapurple green !important;
+  }
+}
+.ant-table-placeholder {
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    td {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+  }
+}
+
+tr.ant-table-row-selected,
+tr.ant-table-row-selected td {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  //   background-color: transparent !important;
+}
+
+.ant-select {
+  background-color: transparent !important;
+  * {
+    background-color: transparent !important;
+    color: #fff;
+  }
+  &::after {
+    color: #fff;
+  }
+}
+
+.rc-virtual-list-holder-inner {
+  background-color: rgba(0, 0, 0) !important;
+}
+.ant-pagination {
+  * {
+    color: #fff !important;
+  }
+  .ant-pagination-item {
+    // color: #fff !important;
+  }
+}
+.ant-pagination-mini {
+  .ant-pagination-item {
+    a {
+      margin: 0 !important;
+    }
+  }
+}
+.ant-pagination-item-active {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #fff;
+}
+.ant-empty {
+  * {
+    color: #fff;
+  }
+}
+::-webkit-scrollbar {
+  background-color: rgba(27, 27, 27, 0.4);
+  border-radius: 10px;
+  width: 6px; //y轴滚动条宽度
+  height: 6px; //x轴滚动条高度
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px; //滚动条的圆角
+  background: rgba(27, 27, 27, 0.4); //滚动条的背景颜色
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px; //滚动条的背景区域的圆角
+  background: #fff; //滚动条的背景颜色
+}

@@ -6,6 +6,7 @@ export type Channels =
   | 'openDialog'
   | 'uploadFiles'
   | 'fileList'
+  | 'deleteFileList'
   | 'uploadingList'
   | 'renameFile'
   | 'copyToClipBoard'

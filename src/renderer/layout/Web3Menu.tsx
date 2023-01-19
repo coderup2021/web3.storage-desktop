@@ -3,6 +3,7 @@ import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { NavLink } from 'react-router-dom';
+import './_style.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -39,18 +40,18 @@ const Web3Menu = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      //   setCollapsed(!collapsed);
+      setCollapsed(!collapsed);
     }, 1000);
   }, []);
 
   return (
     <Menu
       selectedKeys={['1']}
-      mode="inline"
+      mode="horizontal"
       theme="dark"
-      inlineCollapsed={collapsed}
       items={items}
       className={'w3-menu'}
+      id={'w3-menu'}
     />
   );
 };

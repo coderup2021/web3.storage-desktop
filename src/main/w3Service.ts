@@ -19,6 +19,48 @@ interface FileInfo {
   uuid: string;
 }
 
+interface DeleteFileFailRes {
+  cid: string;
+  reason: any;
+}
+interface DeleteFileRes {
+  success: boolean;
+  fails: DeleteFileFailRes[];
+}
+
+export const deleteFilesFromWeb3: (
+  cids: string[],
+  token: string
+) => Promise<DeleteFileRes> = (cids: string[], token: string) => {
+  return new Promise((resolve, reject) => {
+    const client = new Web3Storage({ token });
+    const requests = [];
+    cids.forEach((cid) => {
+      requests.push(client.delete(cid));
+    });
+    Promise.allSettled(cids).then((res) => {
+      res.forEach((r, index) => {
+        const fails: DeleteFileFailRes[] = [];
+        if (r.status !== 'fulfilled') {
+          fails.push({
+            cid: cids[index],
+            reason: r.reason,
+          });
+        }
+        const ret: DeleteFileRes = {
+          success: true,
+          fails: [],
+        };
+        if (fails.length > 0) {
+          ret.success = false;
+          ret.fails = fails;
+        }
+        resolve(ret);
+      });
+    });
+  });
+};
+
 export const uploadToWeb3 = (
   filePath: string,
   apiToken: string,

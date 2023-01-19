@@ -1,13 +1,15 @@
 import React from 'react';
 import Web3Router from '../Router';
 import Main from './Main';
-import Web3Menu from './Web3Menu';
-import './style.scss';
+import Header from './Header';
+import Background from './Background';
+import './_style.scss';
 
 const Layout: React.FC = () => {
   return (
     <div className="w3-app">
-      <Web3Menu />
+      <Background />
+      <Header />
       <Main>
         <Web3Router />
       </Main>

@@ -5,3 +5,9 @@ export const formateHash = (hash: string, startLen = 4, tailLen = 4) => {
     hash.length
   )}`;
 };
+
+export const sleep = async (time: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve({}), time);
+  });
+};

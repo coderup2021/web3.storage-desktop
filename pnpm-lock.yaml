@@ -16,6 +16,7 @@ specifiers:
   '@types/node': 18.7.6
   '@types/react': ^18.0.17
   '@types/react-dom': ^18.0.6
+  '@types/react-highlight-words': ^0.16.4
   '@types/react-test-renderer': ^18.0.0
   '@types/terser-webpack-plugin': ^5.0.4
   '@types/webpack-bundle-analyzer': ^4.4.2
@@ -64,6 +65,7 @@ specifiers:
   prettier: ^2.7.1
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-highlight-words: ^0.18.0
   react-query: ^3.39.2
   react-refresh: ^0.14.0
   react-router-dom: ^6.6.2
@@ -98,6 +100,7 @@ dependencies:
   fs-extra: 11.1.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-highlight-words: 0.18.0_react@18.2.0
   react-query: 3.39.2_biqbaboplfbrettd7655fr4n2y
   react-router-dom: 6.6.2_biqbaboplfbrettd7655fr4n2y
   web3.storage: 4.4.0_es2yyytze7n5ahudqe7otrpr2i
@@ -117,6 +120,7 @@ devDependencies:
   '@types/node': 18.7.6
   '@types/react': 18.0.17
   '@types/react-dom': 18.0.6
+  '@types/react-highlight-words': 0.16.4
   '@types/react-test-renderer': 18.0.0
   '@types/terser-webpack-plugin': 5.2.0_webpack@5.74.0
   '@types/webpack-bundle-analyzer': 4.4.2_webpack-cli@4.10.0
@@ -2962,6 +2966,12 @@ packages:
 
   /@types/react-dom/18.0.6:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
+    dependencies:
+      '@types/react': 18.0.17
+    dev: true
+
+  /@types/react-highlight-words/0.16.4:
+    resolution: {integrity: sha512-KITBX3xzheQLu2s3bUgLmRE7ekmhc52zRjRTwkKayQARh30L4fjEGzGm7ULK9TuX2LgxWWavZqyQGDGjAHbL3w==}
     dependencies:
       '@types/react': 18.0.17
     dev: true
@@ -7411,6 +7421,10 @@ packages:
     hasBin: true
     dev: true
 
+  /highlight-words-core/1.2.2:
+    resolution: {integrity: sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==}
+    dev: false
+
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
 
@@ -9350,6 +9364,10 @@ packages:
     engines: {node: '>= 4.0.0'}
     dependencies:
       fs-monkey: 1.0.3
+
+  /memoize-one/4.0.3:
+    resolution: {integrity: sha512-QmpUu4KqDmX0plH4u+tf0riMc1KHE1+lw95cMrLlXQAFOx/xnBtwhZ52XJxd9X2O6kwKBqX32kmhbhlobD0cuw==}
+    dev: false
 
   /memory-fs/0.2.0:
     resolution: {integrity: sha512-+y4mDxU4rvXXu5UDSGCGNiesFmwCHuefGMoPCO1WYucNYj7DsLqrFaa2fXVI0H+NNiPTwwzKwspn9yTZqUGqng==}
@@ -11347,6 +11365,17 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+
+  /react-highlight-words/0.18.0_react@18.2.0:
+    resolution: {integrity: sha512-5z+46eLPjB4JWgOhuQ0E+6iUPTD1U3amiy5KKjzZmeJ5zyvHr91hnzBT3UHya/KlySm5KRTKpYpba9vs67oO2A==}
+    peerDependencies:
+      react: ^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
+    dependencies:
+      highlight-words-core: 1.2.2
+      memoize-one: 4.0.3
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}

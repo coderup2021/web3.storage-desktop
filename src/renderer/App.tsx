@@ -4,7 +4,7 @@ import {
   Route,
   HashRouter,
 } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import Layout from './Layout/Layout';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
