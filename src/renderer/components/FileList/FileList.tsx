@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { FilterConfirmProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import './_style.scss';
+import UploadModal from '../UploadModal/UploadModal';
 
 interface UploadExtra extends Upload {
   updated: string;
@@ -76,11 +77,10 @@ const FileList = () => {
     setCurrEditCID('');
     setCurrName('');
   }, []);
-
-  const goToUploadPage = useCallback(() => {
-    console.log('xxxxxxxxxxxx');
-    navigate('/upload');
-  }, [navigate]);
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const showUpload = useCallback(() => {
+    setUploadOpen(true);
+  }, []);
   //   const onAddSuccess = useCallback(() => {
   //     queryClient.invalidateQueries('tokens');
   //   }, [queryClient]);
@@ -246,63 +246,66 @@ const FileList = () => {
     } catch (errors) {}
   }, [selectedCids]);
   return (
-    <div className="file-list-page">
-      <h1>Files</h1>
-      <div className="file-list-wrapper">
-        <div className="file-list-header">
-          <span className="title">Files</span>
-          <span className="other">
-            <span onClick={goToUploadPage} className={'upload-icon-wrapper'}>
-              Upload
-              <PlusOutlined />
+    <>
+      <UploadModal open={uploadOpen} setOpen={setUploadOpen} />
+      <div className="file-list-page">
+        <h1>Files</h1>
+        <div className="file-list-wrapper">
+          <div className="file-list-header">
+            <span className="title">Files</span>
+            <span className="other">
+              <span onClick={showUpload} className={'upload-icon-wrapper'}>
+                Upload
+                <PlusOutlined />
+              </span>
+              <span onClick={refresh}>
+                Refresh
+                <RedoOutlined />
+              </span>
             </span>
-            <span onClick={refresh}>
-              Refresh
-              <RedoOutlined />
-            </span>
-          </span>
-        </div>
-        <Table
-          size="small"
-          bordered={false}
-          //   rowSelection={rowSelection}
-          dataSource={dataSource}
-          columns={columns}
-          style={{ width: '100%', height: 'calc(100% - 60px)' }}
-          pagination={{
-            hideOnSinglePage: false,
-            showSizeChanger: true,
-            pageSizeOptions: [10, 20, 40, 100, 200],
-          }}
-          scroll={{ y: height - 160 - 192 - 26 }}
-          rowKey={(row) => row.cid}
-          id="w3-table-list"
-          loading={isFetching}
-        />
-        <footer
-          className="file-list-footer"
-          style={{
-            display: 'none' /*(web3.storage).delete not implemented yet*/,
-          }}
-        >
-          <div
-            className="left"
+          </div>
+          <Table
+            size="small"
+            bordered={false}
+            //   rowSelection={rowSelection}
+            dataSource={dataSource}
+            columns={columns}
+            style={{ width: '100%', height: 'calc(100% - 60px)' }}
+            pagination={{
+              hideOnSinglePage: false,
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 40, 100, 200],
+            }}
+            scroll={{ y: height - 160 - 192 - 26 }}
+            rowKey={(row) => row.cid}
+            id="w3-table-list"
+            loading={isFetching}
+          />
+          <footer
+            className="file-list-footer"
             style={{
               display: 'none' /*(web3.storage).delete not implemented yet*/,
             }}
           >
-            <Button
-              type="default"
-              disabled={selectedCids.length === 0}
-              onClick={DeleteSelectedFiles}
+            <div
+              className="left"
+              style={{
+                display: 'none' /*(web3.storage).delete not implemented yet*/,
+              }}
             >
-              Delete Selected
-            </Button>
-          </div>
-          <div className="right"></div>
-        </footer>
+              <Button
+                type="default"
+                disabled={selectedCids.length === 0}
+                onClick={DeleteSelectedFiles}
+              >
+                Delete Selected
+              </Button>
+            </div>
+            <div className="right"></div>
+          </footer>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default FileList;

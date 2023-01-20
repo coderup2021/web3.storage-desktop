@@ -66,7 +66,7 @@ const ipcMainInit = (mainWindow: BrowserWindow) => {
     });
     for (let i = 0; i < tmpFilePaths.length; i++) {
       const { size, name, uuid } = tmpFilePaths[i];
-      await uploadToWeb3(filePaths[i], token, { size, name, uuid });
+      uploadToWeb3(filePaths[i], token, { size, name, uuid });
     }
   });
 
