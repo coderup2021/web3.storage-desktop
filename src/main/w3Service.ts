@@ -153,13 +153,17 @@ export const uploadToWeb3 = (
 // };
 export const getWeb3List = async (apiToken: string) => {
   const list: Upload[] = [];
-  for await (const item of Web3Storage.list({
-    token: apiToken,
-    endpoint: new URL(baseURL),
-  })) {
-    list.push(item);
+  try {
+    for await (const item of Web3Storage.list({
+      token: apiToken,
+      endpoint: new URL(baseURL),
+    })) {
+      list.push(item);
+    }
+    return list;
+  } catch (error) {
+    throw error;
   }
-  return list;
 };
 
 const tmpToken =

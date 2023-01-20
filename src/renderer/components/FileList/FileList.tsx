@@ -31,7 +31,9 @@ const FileList = () => {
   const [currName, setCurrName] = useState('');
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { data, isSuccess, isError, isFetching } = useQuery<UploadExtra[]>(
+  const { data, isSuccess, isError, isFetching } = useQuery<
+    ApiData<UploadExtra[]>
+  >(
     'fileList',
     async () => window.electron.ipcRenderer.invoke('fileList', null),
     {
@@ -40,7 +42,15 @@ const FileList = () => {
   );
   const baseLink = 'https://w3s.link/ipfs';
   useEffect(() => {
-    if (isSuccess && data) setDataSource(data);
+    if (isSuccess && data) {
+      if (data?.error) {
+        // console.log(data.error.message);
+        message.error(data.error.message);
+        setDataSource([]);
+      } else {
+        setDataSource(data.list);
+      }
+    }
 
     if (isError) message.error('get data error');
   }, [data, isSuccess, isError]);
@@ -225,7 +235,7 @@ const FileList = () => {
       render(text: string) {
         return dayjs(text).format('YYYY/M/DD');
       },
-      defaultSortOrder: 'ascend',
+      defaultSortOrder: 'descend',
       sorter: (a: UploadExtra, b: UploadExtra) =>
         dayjs(a.updated).valueOf() - dayjs(b.updated).valueOf(),
     },

@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import { formateHash } from '../../../util';
 import './_style.scss';
 import TokenForm from './TokenForm';
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 
 const ApiToken = () => {
   const [dataSource, setDataSource] = useState<Token[]>([]);
@@ -39,6 +40,8 @@ const ApiToken = () => {
     window.electron.store.set('currToken', value);
     setCurrToken(window.electron.store.get('currToken') || '');
     message.success('switch token success');
+    queryClient.invalidateQueries('fileList');
+    queryClient.resetQueries('fileList');
   }, []);
 
   const onDelete = useCallback(
@@ -72,7 +75,7 @@ const ApiToken = () => {
       title: 'is Current',
       key: 'hash',
       render: (_: string, record: Token) => {
-        return record.hash === currToken ? <Tag color={'blue'}>yes</Tag> : 'no';
+        return record.hash === currToken ? <CheckOutlined /> : null;
       },
     },
     {
@@ -80,9 +83,17 @@ const ApiToken = () => {
       key: 'operation',
       render: (text: string, record: Token) => (
         <>
-          <Button onClick={(e) => onDelete(e, record)}>Delete</Button>
+          <Button
+            onClick={(e) => onDelete(e, record)}
+            style={{ marginRight: 10, color: '#fff' }}
+          >
+            Delete
+          </Button>
           {currToken !== record.hash && (
-            <Button onClick={() => onTokenChange(record.hash)}>
+            <Button
+              onClick={() => onTokenChange(record.hash)}
+              style={{ marginRight: 10, color: '#fff' }}
+            >
               Set Current
             </Button>
           )}
@@ -93,20 +104,28 @@ const ApiToken = () => {
 
   return (
     <>
-      <Row>
-        <Col span={8}>
-          <span>Current Token: {formateHash(currToken)}</span>
-        </Col>
-        <Button onClick={onAdd}>+</Button>
-      </Row>
       <TokenForm open={open} setOpen={setOpen} onAddSuccess={onAddSuccess} />
-      <Table
-        dataSource={dataSource}
-        columns={columns}
-        style={{ width: '100%' }}
-        pagination={false}
-        rowKey={(row: Token) => row.hash}
-      />
+      <div className="token-list-page">
+        <h1>Token Manage</h1>
+        <div className="list-wrapper">
+          <div className="token-list-header">
+            <span className="title">Token Manage</span>
+            <span>Current Token: {formateHash(currToken)}</span>
+            <Button onClick={onAdd}>
+              Add
+              <PlusOutlined />
+            </Button>
+          </div>
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            style={{ width: '100%' }}
+            pagination={false}
+            rowKey={(row: Token) => row.hash}
+            id="w3-table-list"
+          />
+        </div>
+      </div>
     </>
   );
 };

@@ -1,10 +1,6 @@
 import ApiToken from 'renderer/components/ApiToken/ApiToken';
 
 const TokenManage = () => {
-  return (
-    <div>
-      <ApiToken />
-    </div>
-  );
+  return <ApiToken />;
 };
 export default TokenManage;

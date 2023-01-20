@@ -80,8 +80,15 @@ const ipcMainInit = (mainWindow: BrowserWindow) => {
   ipcMain.handle('fileList', async (event) => {
     let list = [];
     const token = store.get('currToken') as string;
-    list = await getWeb3List(token);
-    return list;
+    try {
+      list = await getWeb3List(token);
+      return { list };
+    } catch (error) {
+      return {
+        list: [],
+        error,
+      };
+    }
     // return [
     //   {
     //     _id: '315318962367882174',

@@ -8,6 +8,10 @@ declare global {
     hash: string;
     comment: string;
   }
+  interface ApiData<T> {
+    error: any;
+    list: T;
+  }
 }
 
 export {};
