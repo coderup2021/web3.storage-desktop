@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Progress, Table, Tooltip } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
+import { Button, Progress, Table, Tooltip } from 'antd';
 import { Upload } from 'web3.storage';
 import { optimizeSizeUnit } from 'renderer/utils';
 import { ColumnType } from 'antd/es/table';
@@ -7,13 +7,15 @@ import './_style.scss';
 import { useQuery } from 'react-query';
 import { UploadStatus } from 'main/type';
 import { UploadingItem } from 'main/w3Service';
-import { InfoCircleOutlined } from '@ant-design/icons';
-
-//prettier-ignore
-const isEditStatus = (record: Upload, currEditCID: string) => record.cid === currEditCID;
+import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import UploadModal from '../UploadModal/UploadModal';
 
 const UploadingList = () => {
   const [dataSource, setDataSource] = useState<UploadingItem[]>([]);
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const showUpload = useCallback(() => {
+    setUploadOpen(true);
+  }, []);
 
   const { data, isSuccess, isError } = useQuery(
     'uploadingList',
@@ -74,13 +76,29 @@ const UploadingList = () => {
   ];
 
   return (
-    <Table
-      dataSource={dataSource}
-      columns={columns}
-      style={{ width: '100%' }}
-      pagination={false}
-      rowKey={(row: UploadingItem) => row.uuid}
-    />
+    <>
+      <UploadModal open={uploadOpen} setOpen={setUploadOpen} />
+      <div className="uploading-list-page">
+        <h1>Uploading List</h1>
+        <div className="list-wrapper">
+          <div className="file-list-header">
+            <span className="title">Uploading List</span>
+            <Button onClick={showUpload}>
+              Upload
+              <PlusOutlined />
+            </Button>
+          </div>
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            style={{ width: '100%' }}
+            pagination={false}
+            rowKey={(row: UploadingItem) => row.uuid}
+            id="w3-table-list"
+          />
+        </div>
+      </div>
+    </>
   );
 };
 export default UploadingList;

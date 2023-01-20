@@ -103,7 +103,7 @@ export const uploadToWeb3 = (
       } as PutOptions); // Promise<CIDString>
       setTimeout(() => {
         store.delete(key);
-      }, 1000);
+      }, 5000);
       resolve({});
     } catch (error) {
       let message = '';

@@ -179,6 +179,22 @@ tr.ant-table-row-selected td {
     color: #fff;
   }
 }
+
+.ant-progress {
+  .ant-progress-outer {
+    .ant-progress-inner {
+      background-color: #fff !important;
+
+      .ant-progress-bg {
+        background-color: #1677ff !important;
+      }
+    }
+  }
+  .ant-progress-text {
+    color: #fff !important;
+  }
+}
+
 ::-webkit-scrollbar {
   background-color: rgba(27, 27, 27, 0.4);
   border-radius: 10px;
