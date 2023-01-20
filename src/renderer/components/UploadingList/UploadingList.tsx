@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Progress, Table, Tooltip } from 'antd';
-import { Upload } from 'web3.storage';
 import { optimizeSizeUnit } from 'renderer/utils';
 import { ColumnType } from 'antd/es/table';
 import './_style.scss';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { UploadStatus } from 'main/type';
 import { UploadingItem } from 'main/w3Service';
 import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -16,6 +15,8 @@ const UploadingList = () => {
   const showUpload = useCallback(() => {
     setUploadOpen(true);
   }, []);
+  const dataLenRef = useRef<number>(0);
+  const queryClient = useQueryClient();
 
   const { data, isSuccess, isError } = useQuery(
     'uploadingList',
@@ -26,6 +27,11 @@ const UploadingList = () => {
   );
   useEffect(() => {
     if (isSuccess) {
+      if (dataLenRef.current !== data.length) {
+        dataLenRef.current = data.length;
+        queryClient.invalidateQueries('fileList');
+        queryClient.resetQueries('fileList');
+      }
       setDataSource(data);
     }
   }, [data, isSuccess]);
