@@ -7,7 +7,7 @@ const Web3Router = () => {
   return (
     <Routes>
       <Route path={'/'} element={<Home />} />
-      <Route path={'/token-manage'} element={<TokenManage />} />
+      <Route path={'/token'} element={<TokenManage />} />
       <Route path={'/upload'} element={<Uploader />} />
     </Routes>
   );

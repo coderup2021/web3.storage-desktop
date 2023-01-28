@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './_style.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -16,7 +16,6 @@ function getItem(
 ): MenuItem {
   return {
     key,
-
     icon,
     children,
     label,
@@ -24,17 +23,17 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem(<NavLink to="/">Home</NavLink>, '1', <PieChartOutlined />),
-  getItem(
-    <NavLink to="/token-manage">Token Manage</NavLink>,
-    '2',
-    <DesktopOutlined />
-  ),
-  getItem(<NavLink to="/upload">Upload</NavLink>, '3', <DesktopOutlined />),
-];
 const Web3Menu = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [activeKeys, setActiveKeys] = useState(['home']);
+  const location = useLocation();
+
+  useEffect(() => {
+    let pathname = location.pathname;
+    if (pathname === '/') pathname = '/home';
+    pathname = pathname.substring(1);
+    setActiveKeys([pathname]);
+  }, [location]);
 
   const toggleCollapsed = () => {};
 
@@ -44,9 +43,23 @@ const Web3Menu = () => {
     }, 1000);
   }, []);
 
+  const items: MenuItem[] = [
+    getItem(<NavLink to="/">Home</NavLink>, 'home', <PieChartOutlined />),
+    getItem(
+      <NavLink to="/token">Token Manage</NavLink>,
+      'token',
+      <DesktopOutlined />
+    ),
+    getItem(
+      <NavLink to="/upload">Upload</NavLink>,
+      'upload',
+      <DesktopOutlined />
+    ),
+  ];
+
   return (
     <Menu
-      selectedKeys={['1']}
+      selectedKeys={activeKeys}
       mode="horizontal"
       theme="dark"
       items={items}
