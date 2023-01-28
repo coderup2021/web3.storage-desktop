@@ -64,7 +64,7 @@ jobs:
           name: build-result
 
       - name: Release software
-        uses: nicpollo/release-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: '*.dmg'
           token: ${{ secrets.GITHUB_TOKEN }}
