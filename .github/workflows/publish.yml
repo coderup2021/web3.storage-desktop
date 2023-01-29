@@ -13,8 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        #os: [macos-latest, ubuntu-latest, windows-latest]
-        os: [macos-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -66,5 +65,5 @@ jobs:
       - name: Release software
         uses: ncipollo/release-action@v1
         with:
-          artifacts: '*.dmg'
+          artifacts: '*.dmg, *.exe, *.deb'
           token: ${{ secrets.GITHUB_TOKEN }}
