@@ -5,7 +5,7 @@ import {
   HashRouter,
 } from 'react-router-dom';
 import './App.scss';
-import Layout from './Layout/Layout';
+import Layout from './layout/Layout';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 export default function App() {
