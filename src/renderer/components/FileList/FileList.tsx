@@ -196,6 +196,7 @@ const FileList = () => {
       title: 'CID',
       dataIndex: 'cid',
       key: 'cid',
+      ...getColumnSearchProps('cid'),
       render: (text: string) => (
         <span className="cid-wrapper">
           <span className="cid">
@@ -217,7 +218,6 @@ const FileList = () => {
           </span>
         </span>
       ),
-      ...getColumnSearchProps('cid'),
     },
     {
       title: 'Size',
