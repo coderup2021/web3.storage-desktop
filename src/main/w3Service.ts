@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import axios, { AxiosRequestConfig } from 'axios';
 import { UploadStatus } from './type';
 import { store } from './store';
+import { filesFromPath } from 'files-from-path';
 
 const baseURL = 'https://api.web3.storage';
 export interface UploadingItem {
@@ -71,10 +72,11 @@ export const uploadToWeb3 = (
     const { uuid, name, size } = fileInfo;
     const key = `uploadingList.${uuid}`;
     const client = new Web3Storage({ token: apiToken });
-    const file: Filelike = {
-      name,
-      stream: () => fs.createReadStream(filePath) as unknown as ReadableStream,
-    };
+    const files = [];
+    for await (const f of filesFromPath(filePath)) {
+      files.push(f);
+    }
+
     //   Pack files into a CAR and send to web3.storage
     store.set(key, {
       uuid,
@@ -83,24 +85,29 @@ export const uploadToWeb3 = (
       status: UploadStatus.UPLOADING,
       progress: 0,
     });
+
     try {
-      const rootCid = await client.put([file], {
-        onStoredChunk: (bytes) => {
-          const percentAdd = Number((bytes / size).toFixed(2));
-          const uploadingList = store.get('uploadingList') as {};
-          const originPercent = ((uploadingList as any)[uuid] as UploadingItem)
-            .progress;
-          const newPercent = originPercent + percentAdd;
-          store.set(key, {
-            uuid,
-            name,
-            size,
-            status:
-              newPercent >= 1 ? UploadStatus.COMPLETE : UploadStatus.UPLOADING,
-            progress: newPercent >= 1 ? 1 : newPercent,
-          });
-        },
-      } as PutOptions); // Promise<CIDString>
+      const onStoredChunk = (bytes: number) => {
+        const percentAdd = Number((bytes / size).toFixed(2));
+        const uploadingList = store.get('uploadingList') as {};
+        const originPercent = ((uploadingList as any)[uuid] as UploadingItem)
+          .progress;
+        const newPercent = originPercent + percentAdd;
+        store.set(key, {
+          uuid,
+          name,
+          size,
+          status:
+            newPercent >= 1 ? UploadStatus.COMPLETE : UploadStatus.UPLOADING,
+          progress: newPercent >= 1 ? 1 : newPercent,
+        });
+      };
+      const rootCid = await client.put(
+        files as Iterable<Filelike>,
+        {
+          onStoredChunk,
+        } as PutOptions
+      ); // Promise<CIDString>
       setTimeout(() => {
         store.delete(key);
       }, 5000);

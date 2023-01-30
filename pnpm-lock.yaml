@@ -55,6 +55,7 @@ specifiers:
   eslint-plugin-react: ^7.30.1
   eslint-plugin-react-hooks: ^4.6.0
   file-loader: ^6.2.0
+  files-from-path: ^0.2.6
   fs-extra: ^11.1.0
   html-webpack-plugin: ^5.5.0
   husky: ^8.0.1
@@ -99,6 +100,7 @@ dependencies:
   electron-log: 4.4.8
   electron-store: 8.1.0
   electron-updater: 5.2.3
+  files-from-path: 0.2.6
   fs-extra: 11.1.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
