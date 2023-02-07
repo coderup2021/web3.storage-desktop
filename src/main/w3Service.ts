@@ -106,6 +106,7 @@ export const uploadToWeb3 = (
         files as Iterable<Filelike>,
         {
           onStoredChunk,
+          name,
         } as PutOptions
       ); // Promise<CIDString>
       setTimeout(() => {
